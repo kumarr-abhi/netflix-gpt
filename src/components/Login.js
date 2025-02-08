@@ -1,6 +1,11 @@
+import { useState } from "react";
 import Header from "./Header";
 
 const Login = () => {
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
   return (
     <div>
       <Header />
@@ -13,7 +18,14 @@ const Login = () => {
       </div>
       <div className="absolute inset-0 flex items-center justify-center">
         <form className="min-h-[700px] mb-16 p-16 w-full max-w-md bg-black bg-opacity-70 rounded-lg text-white space-y-4">
-            <h1 className="font-bold text-5xl pb-5 text-gray-200">Sign In</h1>
+          <h1 className="font-bold text-5xl pb-5 text-gray-200">
+            {isSignInForm ? "Sign In" : "Sign Up"}
+          </h1>
+          {!isSignInForm && <input
+            type="text"
+            placeholder="Full Name"
+            className="w-full p-3 bg-transparent border border-gray-500 rounded focus:outline-none focus:ring focus:ring-white"
+          />}
           <input
             type="text"
             placeholder="Email or mobile number"
@@ -34,6 +46,34 @@ const Login = () => {
           <p className="text-center cursor-pointer hover:text-gray-300 hover:underline">
             Forgot password?
           </p>
+          <div className="flex">
+            <input
+              type="checkbox"
+              className="w-6 h-6 cursor-pointer rounded border-gray-500 hover:border-white hover:checked:bg-gray-300"
+            />
+            <p className="ml-2">Remember me</p>
+          </div>
+          {isSignInForm ? (
+            <div className="flex">
+              New to Netflix?
+              <p
+                className="ml-1 font-bold hover:cursor-pointer hover:underline"
+                onClick={toggleSignInForm}
+              >
+                Sign up now
+              </p>
+            </div>
+          ) : (
+            <div className="flex">
+              Already registered?
+              <p
+                className="ml-1 font-bold hover:cursor-pointer hover:underline"
+                onClick={toggleSignInForm}
+              >
+                Sign in now
+              </p>
+            </div>
+          )}
         </form>
       </div>
     </div>
