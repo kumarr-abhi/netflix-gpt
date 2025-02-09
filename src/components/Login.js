@@ -1,8 +1,22 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "./Header";
+import { checkEmail, checkPassword } from "../utils/validation";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const email = useRef(null);
+  const password = useRef(null);
+  const [isEmailValid, setIsEmailValid] = useState(null);
+  const [isPasswordValid, setIsPasswordValid] = useState(null);
+
+  const handleButtonClick = () => {
+    const emailValid = checkEmail(email.current.value);
+    console.log(emailValid);
+    setIsEmailValid(emailValid);
+    const passwordValid = checkPassword(password.current.value);
+    console.log(passwordValid);
+    setIsPasswordValid(passwordValid);
+  };
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
@@ -17,26 +31,48 @@ const Login = () => {
         />
       </div>
       <div className="absolute inset-0 flex items-center justify-center">
-        <form className="min-h-[700px] mb-16 p-16 w-full max-w-md bg-black bg-opacity-70 rounded-lg text-white space-y-4">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="min-h-[700px] mb-16 p-16 w-full max-w-md bg-black bg-opacity-70 rounded-lg text-white space-y-4"
+        >
           <h1 className="font-bold text-5xl pb-5 text-gray-200">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
-          {!isSignInForm && <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full p-3 bg-transparent border border-gray-500 rounded focus:outline-none focus:ring focus:ring-white"
-          />}
+          {!isSignInForm && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="w-full p-3 bg-transparent border border-gray-500 rounded focus:outline-none focus:ring focus:ring-white"
+            />
+          )}
           <input
+            onClick={() => setIsEmailValid(null)}
+            ref={email}
             type="text"
             placeholder="Email or mobile number"
             className="w-full p-3 bg-transparent border border-gray-500 rounded focus:outline-none focus:ring focus:ring-white"
           />
+          {isEmailValid && (
+            <div>
+              <p className="text-red-500">{isEmailValid}</p>
+            </div>
+          )}
           <input
+            onClick={() => setIsPasswordValid(null)}
+            ref={password}
             type="password"
             placeholder="Password"
             className="w-full p-3 bg-transparent border border-gray-500 rounded focus:outline-none focus:ring focus:ring-white"
           />
-          <button className="w-full p-3 bg-red-600 rounded hover:bg-red-700">
+          {isPasswordValid && (
+            <div>
+              <p className="text-red-500">{isPasswordValid}</p>
+            </div>
+          )}
+          <button
+            onClick={handleButtonClick}
+            className="w-full p-3 bg-red-600 rounded hover:bg-red-700"
+          >
             Sign In
           </button>
           <p className="text-center text-gray-400">OR</p>
